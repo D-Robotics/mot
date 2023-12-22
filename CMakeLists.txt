@@ -45,7 +45,7 @@ include_directories(
   ./deps/iou_based_mot/include/include/
   ./deps/ipc_tracking//include/include/
   ./deps/feat_based_mot/include/include/
-  ./deps/hobotlog/include/include/
+  ./deps/hobotlog/include/
   ./deps/jsoncpp/include/
   ./deps/hobot/include/
   )
