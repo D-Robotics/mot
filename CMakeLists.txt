@@ -82,31 +82,20 @@ add_library(${PROJECT_NAME} SHARED
   ${SOURCE_FILES}
 )
 
-target_link_libraries(${PROJECT_NAME} 
+# MOT-dependent libraries do not need to be exposed to executable programs
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE
   ${MOT_LIBRARIES}
 )
 
 ament_target_dependencies(
-  ${PROJECT_NAME}
+  ${PROJECT_NAME} PUBLIC 
   rclcpp
 )
 
 # Install libraries
 install(TARGETS ${PROJECT_NAME}
   DESTINATION lib/)
-
-install(
-  FILES
-  ./deps/iou_based_mot/lib/libiou_based_mot.a
-  ./deps/jsoncpp/lib/libjsoncpp.a
-  ./deps/hobotlog/lib/libhobotlog.a
-  ./deps/feat_based_mot/lib/libfeat_based_mot.a
-  ./deps/ipc_tracking/lib/libipc_tracking.a
-  ./deps/hobot/lib/libhobotsdk.a
-  ./deps/hobot/lib/libhobotthread.a
-  ./deps/iou_based_mot/lib/libiou_based_mot.a
-  DESTINATION lib/
-)
 
 # Install include files
 install(
