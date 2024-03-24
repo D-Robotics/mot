@@ -1,58 +1,59 @@
-# 功能介绍
+English| [简体中文](./README_cn.md)
 
-hobot_mot package实现多目标跟踪（MOT）功能，用于检测框的跟踪、ID分配。
+# Function Introduction
 
-MOT采用基于IOU的跟踪算法，根据位置信息对目标进行跟踪。
+The hobot_mot package implements Multiple Object Tracking (MOT) function for detecting box tracking and ID assignment.
 
-算法主要分3个步骤：
+MOT uses an IOU-based tracking algorithm to track objects based on their spatial information.
 
-1) prediction 利用卡尔曼滤波器预测轨迹在当前帧的位置；
+The algorithm mainly consists of 3 steps:
 
-2) match 利用预测位置和观测位置得到匹配结果；
+1) Prediction: Utilize Kalman filter to predict the position of the trajectory in the current frame;
 
-3) update 根据匹配结果对轨迹集合进行更新
+2) Match: Obtain matching results based on the predicted positions and observed positions;
 
-# 编译
+3) Update: Update the trajectory set according to the matching results.
 
-## 依赖库
+# Compilation
 
-- hobot：ai_middleware_v1.0.0
-- hobotlog：1.0.4
-- jsoncpp：1.8.4
+## Dependencies
+
+- hobot: ai_middleware_v1.0.0
+- hobotlog: 1.0.4
+- jsoncpp: 1.8.4
 - iou_based_mot
 - ipc_tracking
 - feat_based_mot
 
-## 开发环境
+## Development Environment
 
-- 编程语言: C/C++
-- 开发平台: X3/X86
-- 系统版本：Ubuntu 20.0.4
-- 编译工具链:Linux GCC 9.3.0/Linaro GCC 9.3.0
+- Programming Language: C/C++
+- Development Platform: X3/X86
+- System Version: Ubuntu 20.04
+- Compilation Toolchain: Linux GCC 9.3.0 / Linaro GCC 9.3.0
 
-## 编译
+## Compilation
 
- 支持在X3 Ubuntu系统上编译和在PC上使用docker交叉编译两种方式。
+Support compilation on X3 Ubuntu system and cross-compilation using Docker on PC.
 
-### Ubuntu板端编译
+### Compilation on Ubuntu based platform
 
-1. 编译环境确认 
-   - 板端已安装X3 Ubuntu系统。
-   - 当前编译终端已设置TogetherROS环境变量：`source PATH/setup.bash`。其中PATH为TogetherROS的安装路径。
-   - 已安装ROS2编译工具colcon，安装命令：`pip install -U colcon-common-extensions`
-2. 编译
+1. Confirm the compilation environment
+   - The X3 Ubuntu system is installed on the board.
+   - The current compilation terminal has set the TogetherROS environment variable: `source PATH/setup.bash`. Here, PATH is the installation path of TogetherROS.
+   - ROS2 compilation tool colcon is installed, installation command: `pip install -U colcon-common-extensions`
 
-编译命令：`colcon build --packages-select hobot_mot`
+2. Compilation
 
-### Docker交叉编译
+Compilation command: `colcon build --packages-select hobot_mot`
 
-1. 编译环境确认
+### Docker Cross-Compilation
 
-   - 在docker中编译，并且docker中已经安装好TogetherROS。docker安装、交叉编译说明、TogetherROS编译和部署说明详见机器人开发平台robot_dev_config repo中的README.md。
+1. Confirm the compilation environment- Compile in Docker and TogetherROS is already installed in Docker. For instructions on Docker installation, cross-compilation, TogetherROS compilation, and deployment, please refer to the README.md in the robot development platform robot_dev_config repo.
 
-2. 编译
+2. Compilation
 
-   - 编译命令：
+   - Compilation command:
 
 ```
 export TARGET_ARCH=aarch64
@@ -67,51 +68,50 @@ colcon build --packages-select hobot_mot \
    -DCMAKE_TOOLCHAIN_FILE=`pwd`/robot_dev_config/aarch64_toolchainfile.cmake
 ```
 
-## 注意事项
+## Notes
 
-# 使用介绍
+# User Guide
 
-## package说明 
+## Package Description
 
-hobot_mot package被编译成库，用户在算法检测package中直接使用hobot_mot package的接口实现MOT功能。
+The hobot_mot package is compiled into a library, and users can directly use the interfaces of hobot_mot package in the algorithm detection package to implement the MOT (Multiple Object Tracking) function.
 
-MOT功能所需要的配置在配置文件中指定，包含4类配置：
+The configurations required for MOT are specified in the configuration files, including four types of configurations:
 
-iou2_method_param.json：基于IOU简单匹配的目标跟踪策略，用于人体、人头、人脸检测框的MOT配置。
+iou2_method_param.json: Target tracking strategy based on simple matching using IOU, used for MOT configuration in human body, head, and face detection boxes.
 
-iou2_euclid_method_param.json：基于IOU欧式距离的目标跟踪策略，用于人手检测框的MOT配置。
+iou2_euclid_method_param.json: Target tracking strategy based on IOU Euclidean distance, used for MOT configuration in hand detection boxes.
 
-iou_method_param.json：基于IOU匈牙利匹配的目标跟踪策略，**暂不支持**。
+iou_method_param.json: Target tracking strategy based on IOU Hungarian matching, **currently not supported**.
 
-reid_method_param.json：基于人体特征的目标跟踪策略，**暂不支持**。
+reid_method_param.json: Target tracking strategy based on human feature, **currently not supported**.
 
-**hobot_mot使用方法**
+**Usage of hobot_mot**
 
-1. 根据需要跟踪的检测框类型，选择使用的配置文件。
-2. 使用配置文件创建HobotMot对象。
-3. 使用创建的HobotMot对象的DoProcess接口处理每一帧的检测框结果、时间戳和检测框对应图片分辨率等数据，输出跟踪后的检测框（分配ID）和消失的ID列表。
+1. Select the configuration file based on the type of detection boxes to be tracked.
+2. Create a HobotMot object using the configuration file.
+3. Use the DoProcess interface of the created HobotMot object to process the detection box results, timestamps, image resolutions corresponding to detection boxes, etc., for each frame, and output the tracked detection boxes (assigned IDs) and the list of disappeared IDs.
 
-## 参数
+## Parameters
 
-|         字段          | 描述                                               | 范围           |                            默认值                            |
-| :-------------------: | -------------------------------------------------- | -------------- | :----------------------------------------------------------: |
-|      match_type       | 匹配模式                                           | IOU和Euclidean | iou2_method_param.json配置文件中为IOU，iou2_euclid_method_param.json配置文件中为Euclidean |
-|     tracker_type      | MOT工作模式，目前仅支持IOU based MOT               | IOU_2.0        |                           IOU_2.0                            |
-|   use_kalman_filter   | 是否使用卡尔曼滤波器预测框，1为使用                | 0/1            |                              1                               |
-|  missing_time_thres   | 目标不可见帧数阈值，超过则置为InVisible            | >=0            |                              2                               |
-|  vanish_frame_count   | 目标消失帧数阈值，超过则置为Deleted                | >=0            |                              50                              |
-|       time_gap        | 帧间隔时间                                         | >=0            |                              40                              |
-|       iou_thres       | iou阈值，超过则进入匹配流程                        | 0-1.0          |                             0.2                              |
-|    euclidean_thres    | 欧式距离阈值，小于则进入匹配流程                   | >=0            |                             200                              |
-|   use_location_gain   | 是否计算目标检测框和其他检测框的最小距离，1为使用  | 0/1            |                              1                               |
-| max_trajectory_number | 状态机保存最大track数                              | >=0            |                              3                               |
-|       min_score       | 目标检测框得分阈值，低于此阈值的检测框不被用于跟踪 | 0-1.0          |                             0.9                              |
-| ignore_overlap_thres  | 筛选遮挡过大的box阈值,超过则不跟踪                 | 0-1.0          |                             0.9                              |
+|         Field          | Description                                     | Range          |                         Default                          |
+| :-------------------:  | -----------------------------------------------  | -------------- | :------------------------------------------------------: |
+|      match_type        | Matching mode                                   | IOU and Euclidean | IOU in iou2_method_param.json, Euclidean in iou2_euclid_method_param.json |
+|     tracker_type       | MOT working mode, currently only supports IOU based MOT | IOU 2.0   |                        IOU 2.0                          |
+|   use_kalman_filter    | Whether to use Kalman filter to predict boxes, 1 for yes | 0/1            |                           1                              ||  missing_time_thres   | Threshold of consecutive frames where the target is invisible, beyond which it is set as 'InVisible'            | >=0            |                              2                               |
+|  vanish_frame_count   | Threshold of consecutive frames where the target disappears, beyond which it is set as 'Deleted'                | >=0            |                              50                              |
+|       time_gap        | Time interval between frames                                                              | >=0            |                              40                              |
+|       iou_thres       | Threshold of IoU, above which it enters the matching process                                | 0-1.0          |                             0.2                              |
+|    euclidean_thres    | Threshold of Euclidean distance, below which it enters the matching process                  | >=0            |                             200                              |
+|   use_location_gain   | Whether to calculate the minimum distance between the target detection box and other detection boxes, 1 for using  | 0/1            |                              1                               |
+| max_trajectory_number | Maximum number of tracks saved in the state machine                                         | >=0            |                              3                               |
+|       min_score       | Threshold of the score of target detection box, detection boxes with scores lower than this threshold are not used for tracking | 0-1.0          |                             0.9                              |
+| ignore_overlap_thres  | Threshold for filtering boxes with excessive overlap, beyond which they are not tracked          | 0-1.0          |                             0.9                              |
 
-## 注意事项
+## Notes
 
-使用HobotMot时，需要保证输入给DoProcess接口的数据时序，推荐的做法是在检测package中将算法模型的输出结果进行排序后输出/使用。
+When using HobotMot, it is necessary to ensure the temporal order of the data input to the DoProcess interface. It is recommended to sort the output of the algorithm model in the detection package before outputting/using it.
 
-为了保证MOT效果，如果输入的检测框置信度小于阈值（配置文件中的min_score配置项），此检测框将被过滤，输出的跟踪后的对应检测框的state_为INVALID，表示此检测框不可用，需要丢弃此检测结果。
+To ensure the effectiveness of MOT, if the confidence score of an input detection box is lower than the threshold (min_score in the configuration file), this detection box will be filtered out. The state of the corresponding tracked detection box will be set to INVALID, indicating that this detection box is not usable and should be discarded.
 
-用户可以根据实际使用场景调整配置文件中的检测框得分阈值min_score。
+Users can adjust the detection box score threshold min_score in the configuration file based on actual usage scenarios.
