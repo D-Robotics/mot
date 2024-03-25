@@ -49,9 +49,10 @@ Compilation command: `colcon build --packages-select hobot_mot`
 
 ### Docker Cross-Compilation
 
-1. Confirm the compilation environment- Compile in Docker and TogetherROS is already installed in Docker. For instructions on Docker installation, cross-compilation, TogetherROS compilation, and deployment, please refer to the README.md in the robot development platform robot_dev_config repo.
+1. Confirm the compilation environment
+   - Compile in Docker and TogetherROS is already installed in Docker. For instructions on Docker installation, cross-compilation, TogetherROS compilation, and deployment, please refer to the README.md in the robot development platform robot_dev_config repo.
 
-2. Compilation
+4. Compilation
 
    - Compilation command:
 
@@ -98,7 +99,8 @@ reid_method_param.json: Target tracking strategy based on human feature, **curre
 | :-------------------:  | -----------------------------------------------  | -------------- | :------------------------------------------------------: |
 |      match_type        | Matching mode                                   | IOU and Euclidean | IOU in iou2_method_param.json, Euclidean in iou2_euclid_method_param.json |
 |     tracker_type       | MOT working mode, currently only supports IOU based MOT | IOU 2.0   |                        IOU 2.0                          |
-|   use_kalman_filter    | Whether to use Kalman filter to predict boxes, 1 for yes | 0/1            |                           1                              ||  missing_time_thres   | Threshold of consecutive frames where the target is invisible, beyond which it is set as 'InVisible'            | >=0            |                              2                               |
+|   use_kalman_filter    | Whether to use Kalman filter to predict boxes, 1 for yes | 0/1            |                           1                              |
+|  missing_time_thres   | Threshold of consecutive frames where the target is invisible, beyond which it is set as 'InVisible'            | >=0            |                              2                               |
 |  vanish_frame_count   | Threshold of consecutive frames where the target disappears, beyond which it is set as 'Deleted'                | >=0            |                              50                              |
 |       time_gap        | Time interval between frames                                                              | >=0            |                              40                              |
 |       iou_thres       | Threshold of IoU, above which it enters the matching process                                | 0-1.0          |                             0.2                              |
