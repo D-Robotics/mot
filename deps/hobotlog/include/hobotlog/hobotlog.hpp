@@ -1,6 +1,6 @@
 //
 // Created by Minghao Wang on 17-1-5.
-// Copyright (c) 2017 Horizon Robotics. All rights reserved.
+// Copyright (c) 2017 D-Robotics. All rights reserved.
 //
 
 #ifndef HOBOTLOG_HOBOTLOG_HPP

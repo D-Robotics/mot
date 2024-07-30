@@ -1,6 +1,6 @@
 //
 // Created by kai01.han on 6/3/19.
-// Copyright (c) 2019 Horizon Robotics. All rights reserved.
+// Copyright (c) 2024 D-Robotics. All rights reserved.
 //
 
 #ifndef IOU_BASED_MOT_CONFIG_H_

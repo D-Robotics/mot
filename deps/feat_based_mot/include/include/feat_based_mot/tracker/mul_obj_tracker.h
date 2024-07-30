@@ -1,6 +1,6 @@
 //
 // Created by xuhang.zhuang on 2019-04-17.
-// Copyright (c) 2019 Horizon Robotics. All rights reserved.
+// Copyright (c) 2024 D-Robotics. All rights reserved.
 //
 
 #ifndef FEAT_BASED_MOT_TRACKER_MUL_OBJ_TRACKER_H_

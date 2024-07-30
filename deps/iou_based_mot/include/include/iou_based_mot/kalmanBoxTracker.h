@@ -3,7 +3,7 @@
 * Author:    Jiang Lu (jianglu16@outlook.com).
 * Date:      2017.09.08.
 *                  All Right Reserved.
-*  Copyright (c) 2019 Horizon Robotics. All rights reserved.
+*  Copyright (c) 2024 D-Robotics. All rights reserved.
 **************************************************************************************************/
 #ifndef IOU_BASED_MOT_KALMANBOXTRACKER_H_
 #define IOU_BASED_MOT_KALMANBOXTRACKER_H_

@@ -1,6 +1,6 @@
 //
 // Created by Lisen Mu on 8/26/16.
-// Copyright (c) 2016 Horizon Robotics.
+// Copyright (c) 2016 D-Robotics.
 //
 
 #ifndef HOBOT_THREAD_H_

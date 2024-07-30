@@ -1,12 +1,12 @@
 /*
  * @Description: tracking algorithm implementation
- * @Author: chang.huang@horizon.ai
+ * @Author: chang.huang@d-robotics.cc
  * @Date: 2016-10-8 16:00:20
- * @Author: chao01.yang@horizon.ai
+ * @Author: chao01.yang@d-robotics.cc
  * @Date: 2019-12-14 16:00:20
- * @LastEditors: hao.tian@horizon.ai
+ * @LastEditors: hao.tian@d-robotics.cc
  * @LastEditTime: 2019-12-17 17:21:34
- * @Copyright 2017~2019 Horizon Robotics, Inc.
+ * @Copyright 2017~2019 D-Robotics, Inc.
  */
 
 #ifndef IPC_TRACKING_TRACKING_DATA_TYPES_H

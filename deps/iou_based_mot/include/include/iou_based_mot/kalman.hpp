@@ -6,7 +6,7 @@
 *
 * @author: Hayk Martirosyan
 * @date: 2014.11.15
- *  Copyright (c) 2019 Horizon Robotics. All rights reserved.
+ *  Copyright (c) 2024 D-Robotics. All rights reserved.
 */
 
 #pragma once
