@@ -31,10 +31,8 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(ament_index_cpp REQUIRED)
 
 add_definitions(-DHR_POSIX -DENABLE_IOU2)
 
@@ -115,6 +113,27 @@ install(
 install(DIRECTORY
   ${PROJECT_SOURCE_DIR}/config/
   DESTINATION lib/${PROJECT_NAME}/config/
+)
+
+# Add tros_mot_node executable
+find_package(rclcpp_components REQUIRED)
+find_package(ai_msgs REQUIRED)
+
+add_executable(tros_mot_node src/tros_mot_node.cpp)
+target_compile_features(tros_mot_node PUBLIC cxx_std_17)
+target_include_directories(tros_mot_node PRIVATE include)
+ament_target_dependencies(tros_mot_node
+  rclcpp
+  rclcpp_components
+  ai_msgs
+  ament_index_cpp
+)
+target_link_libraries(tros_mot_node
+  ${PROJECT_NAME}
+)
+
+install(TARGETS tros_mot_node
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 # Causes the visibility macros to use dllexport rather than dllimport,

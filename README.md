@@ -71,6 +71,94 @@ colcon build --packages-select hobot_mot \
 
 ## Notes
 
+## tros_mot_node
+
+The `tros_mot_node` is a standalone ROS2 node that subscribes to `ai_msgs::msg::PerceptionTargets` messages, runs HobotMot tracking to assign and update track IDs on targets, and publishes a new `ai_msgs::msg::PerceptionTargets` message. This decouples MOT from the detection node, allowing MOT to be used with any detection source.
+
+### Node Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `mot_config_path` | string | `config/iou2_method_param.json` | MOT config file path (relative to package share dir, or absolute path) |
+| `sub_topic` | string | `/hobot_dnn_detection` | Input PerceptionTargets topic |
+| `pub_topic` | string | `/tros_mot_targets` | Output PerceptionTargets topic |
+| `frame_width` | int | 960 | Frame width for MOT processing |
+| `frame_height` | int | 544 | Frame height for MOT processing |
+
+### Subscribed Topics
+
+| Topic | Type | Description |
+|-------|------|-------------|
+| `sub_topic` | `ai_msgs::msg::PerceptionTargets` | Detection results with targets to track |
+
+### Published Topics
+
+| Topic | Type | Description |
+|-------|------|-------------|
+| `pub_topic` | `ai_msgs::msg::PerceptionTargets` | Tracked results with assigned track IDs |
+
+The output message populates:
+- `targets` — tracked targets with `track_id` assigned by MOT, original attributes/points/captures preserved
+- `disappeared_targets` — targets that have disappeared (exceeded `vanish_frame_count`), with `track_id` and `type` set
+
+### Example: Tracking Body Detection Boxes
+
+The following example shows how to use `tros_mot_node` to track person body detection boxes from `mono2d_body_detection`:
+
+**Step 1: Launch body detection** (outputs detection results to `/hobot_dnn_detection`)
+
+```bash
+ros2 launch mono2d_body_detection mono2d_body_detection.launch.py
+```
+
+**Step 2: Launch tros_mot_node** (subscribes to detection results, outputs tracked results)
+
+```bash
+ros2 run hobot_mot tros_mot_node --ros-args \
+  -p sub_topic:=/hobot_dnn_detection \
+  -p pub_topic:=/tros_mot_targets \
+  -p mot_config_path:=config/iou2_method_param.json \
+  -p frame_width:=960 \
+  -p frame_height:=544
+```
+
+**Step 3: Monitor tracked results**
+
+```bash
+# View tracked targets with assigned IDs
+ros2 topic echo /tros_mot_targets
+
+# Check topic info
+ros2 topic info /tros_mot_targets
+```
+
+**Example output message:**
+
+```
+header:
+  stamp: ...
+  frame_id: "default"
+targets:
+  - type: "person"
+    track_id: 1
+    rois:
+      - type: "body"
+        rect: {x_offset: 100, y_offset: 50, width: 80, height: 200}
+    attributes:
+      - type: "height_cm"
+        value: 170.0
+  - type: "person"
+    track_id: 2
+    rois:
+      - type: "body"
+        rect: {x_offset: 400, y_offset: 60, width: 75, height: 190}
+disappeared_targets:
+  - type: "person"
+    track_id: 0
+```
+
+Each target's `track_id` is assigned by the MOT tracker and remains consistent across frames for the same person. When a tracked person disappears beyond the configured `vanish_frame_count`, it appears in `disappeared_targets`.
+
 # User Guide
 
 ## Package Description
